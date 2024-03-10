@@ -1,16 +1,19 @@
-import { Context, Markup, Telegraf } from 'telegraf';
+import { Markup } from 'telegraf';
 import { CHANGE_ACTIVITY, CHANGE_AGE, CHANGE_GENDER, CHANGE_GOAL, CHANGE_HEALTH_ISSUES, CHANGE_HEIGHT, CHANGE_WEIGHT, EDIT_DATA, GO_BACK, SEND_PHOTO, SET_GENDER_FEMALE, SET_GENDER_MALE } from "../types";
 import { animateThinking, delay } from '../utils/helpers';
 
-export function registerFitnessMenuActions(bot: Telegraf<Context>) {
-    const userStates = new Map<string | number, any>();
-    const setUserState = (userId: string | number, newState: any) => {
-        userStates.set(userId, newState);
-    };
+const userStates = new Map();
 
-    const getUserState = (userId: string | number) => {
-        return userStates.get(userId) || {};
-    };
+const setUserState = (userId: string | number, newState: any) => {
+    userStates.set(userId, newState);
+};
+
+const getUserState = (userId: string | number) => {
+    return userStates.get(userId) || {};
+};
+
+export function registerFitnessMenuActions(bot: any) {
+
     bot.action(SEND_PHOTO, async (ctx: any) => {
         const userId = ctx.from.id.toString();
         setUserState(userId, { expectingPhoto: true });
